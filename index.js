@@ -74,54 +74,41 @@ btnEnviar.addEventListener("click", enviarId);
 
 function enviarId(e) {
   e.preventDefault();
-  //Al hacer click capturo el valr del inputy lo asigno a pizzaId
   const pizzaId = parseInt(input.value);
-  //Si intenta enviar sin poner nada en el input
   if (!pizzaId) {
-    mostrarAlerta("Elegí un id valido (desde 1 hasta 6)");
+    mostrarAlerta("Elegí un id válido (1-6)");
     reset();
-    return; // no va a pasar al siguiente codigo hasta que cumpla la condicion
+    return;
   }
-  //Si intenta enviar un numero mayor o menor a los id que tienen las pizzas mi array 'pizzas'
   if (pizzaId <= 0 || pizzaId > pizzas.length) {
-    mostrarAlerta("Elegí un id valido (desde 1 hasta 6)");
+    mostrarAlerta("Elegí un id válido (1-6)");
     reset();
-    return; // no va a pasar al siguiente codigo hasta que cumpla la condicion
+    return;
   }
-  //Pasa todas las validaciones y busco la pizza que tenga el id igual al valor del input
   const resultado = pizzas.find((pizza) => pizza.id === pizzaId);
-  renderPizza(resultado); //a esa pizza que encontré la muestro en pantalla
+  renderPizza(resultado);
 }
-//Mostrar en pantalla
 const renderPizza = (pizza) => {
-  const { nombre, precio } = pizza; //Destructuracion del objeto (la pizza que encontré)
-  //Inyecto el nombre en el h2
-  h2.innerHTML = `<span class= "text-small">Nombre: </span>${nombre}`;
-  //Inyecto el precio en el h4
-  h4.innerHTML = `<span class= "text-small">Precio: </span>${precio}`;
+  const { nombre, precio } = pizza;
+  h2.innerHTML = `<span class= "text-xl">Nombre: </span>${nombre}`;
+  h4.innerHTML = `<span class= "text-xl">Precio: </span>${precio}`;
 };
 
-// creo la alerta
 const mostrarAlerta = (mensaje) => {
-  //Sirve para saber si ya existe una alerta previa
-  const existeAlerta = document.querySelector(".m-auto");
-  if (!existeAlerta) {
-    //si no existe la creo
-    const divAlert = document.createElement("div");
-    divAlert.classList.add("text-center", "m-auto");
-    divAlert.innerHTML = `
-    <p class="alert">${mensaje}</p>
-    `;
-    //La agrego al contenedor (es el div padre de todos algo así como Odín 😜)
-    contenedor.appendChild(divAlert);
-    //Remuevo la alerta despues de 3 segundos
-    setTimeout(() => {
-      divAlert.remove();
-    }, 3000);
+  const existeAlerta = document.querySelector(".alerta");
+  if (existeAlerta) {
+    existeAlerta.remove();
   }
+  const divAlert = document.createElement("div");
+  divAlert.classList.add("text-center", "m-auto", "alerta");
+  divAlert.innerHTML = `
+    <p class="alert text-small">${mensaje}</p>
+    `;
+  contenedor.appendChild(divAlert);
+  setTimeout(() => {
+    divAlert.remove();
+  }, 3000);
 };
-
-//Esto resetea el h2 y h4
 const reset = () => {
   h2.innerHTML = "";
   h4.innerHTML = "";
